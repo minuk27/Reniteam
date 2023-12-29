@@ -1,6 +1,11 @@
 Unity Setting
 
-1. 초기 설정
+1. 프로젝트 생성
+1) Unity Version: 2022.3.13f1
+2) 2d프로젝트
+3) 프로젝트이름은 자유
+
+2. 프로젝트 설정
 1) [Edit] -> [Project Settings] -> [Editor]에서 Asset Serialization에 Mode가 Force Text인지 확인
 2) [Edit] -> [Project Settings]에서 검색창에 version검색 후 [Version Control]에 Mode가 Visible Meta Files인지 확인
 
