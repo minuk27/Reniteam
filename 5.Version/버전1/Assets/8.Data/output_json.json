@@ -1,0 +1,29 @@
+{
+    "document": {
+        "sentiment": "neutral",
+        "confidence": {
+            "negative": 0.0060302247,
+            "positive": 0.008599538,
+            "neutral": 99.98537
+        }
+    },
+    "sentences": [
+        {
+            "content": "{\"text\":\"\"}",
+            "offset": 0,
+            "length": 11,
+            "sentiment": "neutral",
+            "confidence": {
+                "negative": 6.030225e-05,
+                "positive": 8.599539e-05,
+                "neutral": 0.99985373
+            },
+            "highlights": [
+                {
+                    "offset": 2,
+                    "length": 4
+                }
+            ]
+        }
+    ]
+}
