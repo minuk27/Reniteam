@@ -4,58 +4,56 @@ using UnityEngine;
 
 public class VoiceRange : MonoBehaviour
 {
-    private Collider2D voiceRange;
-    private List<int> talkPartner;
-    private bool notTalk;
+    private Dictionary<int, GameObject> npcDetect;
+    private int npcID;
 
     private void Awake()
     {
-        voiceRange = new Collider2D();
-        talkPartner = new List<int>();
-
-        notTalk = true;
+        npcID = 0;
+        npcDetect = new Dictionary<int, GameObject>();
     }
+
+    public int getnpcID(Vector2 playerPos)
+    {
+        float minDistance = 9999f;
+        float distance;
+        npcID = 0;
+        foreach (int id in npcDetect.Keys)
+        {
+            distance = Vector3.Distance(npcDetect[id].transform.position, playerPos);
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                npcID = id;
+            }
+
+        }
+        return npcID;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "npc")
+        if (collision.gameObject.tag == "npc")
         {
-            if (collision.gameObject.GetComponent<NPC>().GetBoolTalk)
+            int id = collision.gameObject.GetComponent<NPC>().GetID;
+            if (!npcDetect.ContainsKey(id))
             {
-                int value = collision.gameObject.GetComponent<NPCDialog>().GetID;
-                if (!talkPartner.Contains(value))
-                    talkPartner.Add(value);
+                npcDetect.Add(id, collision.gameObject);
             }
         }
     }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "npc")
         {
-            if (collision.gameObject.GetComponent<NPC>().GetBoolTalk)
+            int id = collision.gameObject.GetComponent<NPC>().GetID;
+            if (npcDetect.ContainsKey(id))
             {
-                int value = collision.gameObject.GetComponent<NPCDialog>().GetID;
-                if (talkPartner.Contains(value))
-                    talkPartner.Remove(value);
+                npcDetect.Remove(id);
             }
         }
     }
-
-    public void CheckVoiceRange()
-    {
-        if (talkPartner.Count > 0 && notTalk)
-        {           
-            notTalk = false;
-            int value;
-            value = talkPartner[0];
-            Debug.Log(value + "번 npc와의 대화를 시작합니다.");
-            GameManager.Manager.GetUIManager.ChoiceUI(UIs.ChatWindow);
-            //UI
-            talkPartner.Remove(value);
-            talkPartner.Add(value);
-        }
-    }
-
-    public void SetNotTalk() { if (!notTalk) { notTalk = true; } }
+    //들어왔을때 캐릭터 움직임 일시 멈추게 하고
+    //TalkManager
 }
