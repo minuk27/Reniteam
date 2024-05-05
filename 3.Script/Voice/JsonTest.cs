@@ -1,41 +1,56 @@
 using UnityEngine;
 using System.Collections;
 using System.IO;
+using UnityEngine.UI;
 
-public class JsonParser : MonoBehaviour
+public class JsonTest : MonoBehaviour
 {
-    public string filePath = "./Assets/8.Data/output_json.json"; // JSON 파일 경로
-    [System.Serializable]
-    public class MyData
+    private string filePath = "./Assets/8.Data/nouns.json"; // JSON 파일 경로
+    [SerializeField] GameObject voiceWindow;
+    [SerializeField] GameObject talkArrow;
+    [SerializeField] Text voicText;
+
+    private void Awake()
     {
-        public MySentence[] sentences;
+        voiceWindow.SetActive(false);
     }
 
-    [System.Serializable]
-    public class MySentence
+    private void Update()
     {
-        public string content;
+        if (Input.GetKey(KeyCode.Z))
+        {
+            voiceWindow.SetActive(false);
+        }
     }
 
-    void Start()
+    private void OnEnable()
+    {
+        voiceWindow.SetActive(false);
+    }
+
+    public void voiceText()
     {
         string jsonString = File.ReadAllText(filePath); // 파일로부터 JSON 읽기
+        voiceWindow.SetActive(true);
+        StartCoroutine(WriteText(jsonString));
+        Debug.Log(jsonString);
+    }
 
-        MyData data = JsonUtility.FromJson<MyData>(jsonString);
+    IEnumerator WriteText(string text)
+    {
+        voicText.text = "";
+        foreach (char s in text)
+        {
+            voicText.text += s;
+            yield return new WaitForSeconds(0.05f);
+        }
+        yield return new WaitForSeconds(0.1f);
+        talkArrow.GetComponent<Animator>().SetTrigger("Move");
+    }
 
-        if (data != null && data.sentences.Length > 0)
-        {
-            string extractedText = data.sentences[0].content;
-            Debug.Log("Extracted Text: " + extractedText);
-            string[] values = extractedText.Split('"');
-            if (values.Length >= 2)
-            {
-                Debug.Log(values[3]);
-            }
-        }
-        else
-        {
-            Debug.Log("Error parsing JSON or no data found.");
-        }
+    public void endVoice()
+    {
+        StopCoroutine("WriteText");
+        voiceWindow.SetActive(false);
     }
 }
