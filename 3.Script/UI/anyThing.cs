@@ -9,7 +9,7 @@ public class anyThing : MonoBehaviour
     {
         if (Input.anyKeyDown) 
         {
-            GameManager.Manager.GetSceneManager.ChangeSceneMainScreen("TutorialVoice");
+            //GameManager.Manager.GetSceneManager.ChangeSceneMainScreen("TutorialVoice");
         }
     }
 }

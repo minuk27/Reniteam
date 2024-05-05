@@ -43,7 +43,7 @@ public class MenuButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     void OnClick_ChangeScene(string name)
     {
-        GameManager.Manager.GetSceneManager.ChangeSceneMainScreen(name);
+        //GameManager.Manager.GetSceneManager.ChangeSceneMainScreen(name);
     }
 
     void OnClick_StartVoice()
@@ -53,12 +53,12 @@ public class MenuButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        buttonImage.color  = new Color(1f, 1f, 1f, 0.5f);
+        buttonImage.color = Color.white;        
     }
 
     // 버튼 선택 해제됐을 때 호출되는 메소드
     public void OnDeselect(BaseEventData eventData)
     {
-        buttonImage.color = Color.white;
+        buttonImage.color = new Color(1f, 1f, 1f, 0.5f);
     }
 }
