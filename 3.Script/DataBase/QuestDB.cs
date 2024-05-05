@@ -5,22 +5,18 @@ using UnityEngine;
 [System.Serializable]
 public class Quest
 {
-    [Header("퀘스트 아이디")]
+    [Header("퀘스트아이디")]
     public int questID;
-    [Header("퀘스트 제공자 npc아이디")]
-    public int npcID;
-    [Header("퀘스트 내용")]
-    public string contents;
-    [Header("퀘스트 보상 종류(1: 정보, 2: 아이템)")]
+    [Header("퀘스트 수락시")]
+    public string acceptSpeech;
+    [Header("퀘스트 거절시")]
+    public string rejectSppech;
+    [Header("퀘스트 보상 종류(0: 없음(정보도 포함), 1: 아이템, 2: 2차퀘스트)")]
     public int form;
-    [Header("퀘스트 보상(정보: 대화아이디, 아이템: 아이템아이디)")]
-    public int compensation;
-    [Header("퀘스트 성공 여부")]
-    public bool succes;
-    [Header("퀘스트 보상2여부")]
-    public bool form2;//퀘스트 보상2여부 -> 2차퀘스트(선행퀘스트로 열리는 퀘스트) -> 보상2가 더 많을 시(예: 정보와 아이템 동시에 줄경우) int형으로 교체
-    [Header("2차퀘스트 아이디(없으면 0)")]
-    public int compensation2;
+    [Header("스토리분기(대사변경, 스토리변경등)")]
+    public bool change;
+    [Header("퀘스트 강제성(반드시 수행인지 아닌지)")]
+    public bool certainly;
 }
 
 public class QuestDB : MonoBehaviour
