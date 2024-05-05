@@ -17,6 +17,7 @@ public class CamControl : MonoBehaviour
     [SerializeField]
     CamState cam = new CamState();
     float height, width;
+    float minX, maxX, minY, maxY;
 
     // Start is called before the first frame update
     void Start()
@@ -42,5 +43,37 @@ public class CamControl : MonoBehaviour
         float clampY = Mathf.Clamp(transform.position.y, ly + cam.center.y, ly + cam.center.y);
 
         transform.position = new Vector3(clampX, clampY, -10f);
+    }
+
+    public void CamMove(Place place)
+    {
+        switch (place)
+        {
+            case Place.Home_PlayerRoom:
+                this.gameObject.transform.position = new Vector3(0, 30, -10);
+                cam.center.x = 0; cam.center.y = 30;
+                cam.size.x = 37; cam.size.y = 19;
+                break;
+            case Place.Home_LivingRoom:
+                this.gameObject.transform.position = new Vector3(0, 0, -10);
+                cam.center.x = 0; cam.center.y = 0;
+                cam.size.x = 45; cam.size.y = 19;
+                break;
+            case Place.Home_Yard:
+                this.gameObject.transform.position = new Vector3(-50, 0, -10);
+                cam.center.x = -50; cam.center.y = 0;
+                cam.size.x = 45; cam.size.y = 19;
+                break;
+            case Place.Town:
+                this.gameObject.transform.position = new Vector3(-100, 0, -10);
+                cam.center.x = -100; cam.center.y = 0;
+                cam.size.x = 45; cam.size.y = 19;
+                break;
+            case Place.Voice:
+                this.gameObject.transform.position = new Vector3(-150, 0, -10);
+                cam.center.x = -150; cam.center.y = 0;
+                cam.size.x = 45; cam.size.y = 19;
+                break;
+        }
     }
 }

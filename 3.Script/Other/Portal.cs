@@ -5,7 +5,11 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     [SerializeField]
-    private string position;
+    private GameObject position;
+    [SerializeField]
+    private Place place;
+    
 
-    public string Position { get { return position; } }
+    public Vector2 Position { get { return position.transform.position; } }
+    public Place GetPlace { get { return place; } }
 }
