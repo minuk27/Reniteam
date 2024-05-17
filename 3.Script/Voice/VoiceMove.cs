@@ -24,7 +24,7 @@ public class VoiceMove : MonoBehaviour
         {
             player.SetActive(false);
             CamMove.camM.PlaceCam(Place.Voice);
-            GameManager.Manager.GetUIManager.ActiveUI(UIs.VoiceWindow);
+            GameManager.Manager.GetUIManager.ActiveUI(UIs.DialogWindow);
         }
     }
 
@@ -32,6 +32,6 @@ public class VoiceMove : MonoBehaviour
     {
         player.SetActive(true);
         CamMove.camM.PlaceCam(p);
-        GameManager.Manager.GetUIManager.InActiveUI(UIs.VoiceWindow);
+        GameManager.Manager.GetUIManager.InActiveUI(UIs.DialogWindow);
     }
 }

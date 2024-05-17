@@ -13,8 +13,10 @@ public class Mic : MonoBehaviour
     void Start()
     {
         aud = GetComponent<AudioSource>();
-        recordTime = 3;
+        recordTime = 5;
     }
+
+    
 
     public void PlaySnd()
     {
@@ -30,7 +32,7 @@ public class Mic : MonoBehaviour
             Debug.Log("≥Ï¿ΩΩ√¿€");
         }*/
         Debug.Log("≥Ï¿ΩΩ√¿€");
-        record = Microphone.Start(Microphone.devices[0].ToString(), false, recordTime, 44100); // recordTime(3)√  ≥Ï¿Ω
+        record = Microphone.Start(Microphone.devices[0].ToString(), false, recordTime, 44100); // recordTime (æ‡ 10)√  ≥Ï¿Ω
         timer.SetActive(true);
         timer.GetComponent<Timer>().startTime();
         aud.volume = 100f;
@@ -43,7 +45,6 @@ public class Mic : MonoBehaviour
         yield return new WaitForSeconds(recordTime+0.5f);
         SavWav.Save("test", aud.clip);
         yield return new WaitForSeconds(0.5f);
-        timer.SetActive(false);
         stt.soundToText();
     }
 }

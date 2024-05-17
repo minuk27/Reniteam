@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public class Stt : MonoBehaviour
 {
-
+    [SerializeField] JsonTest voice;
     public void soundToText()
     {
         string filePath = @"C:/unityGame/CapStone/Assets/6.STT/dist/test.exe";
@@ -26,6 +26,6 @@ public class Stt : MonoBehaviour
     IEnumerator conversionTime()
     {
         yield return new WaitForSeconds(5f); //녹음과 stt에 문제가 없는 데도 녹음된 내용이 전부 테스트로 전달이 안될경우 이것을 수정
-        GameManager.Manager.GetUIManager.getVoiceWindow().voiceText();
+        voice.voiceText();
     }
 }
