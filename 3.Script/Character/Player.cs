@@ -4,144 +4,56 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    Rigidbody2D rigid;
-    SpriteRenderer sprite;
-    Animator anim;
-    VoiceRange vRange;
+    PlayerMove move;
+    PlayerTalk talk;
+    NPCRange rangeNPC;
+    ItemRange rangeItem;
+    int targetType;
 
-    private float speed;
-    private float jumpPower;
-    private float posX;
-    private float nowTime;
-    private float delayTime;
-
-    private bool isJump;
-    private bool isTalk;
-    private bool stop;
-    private bool isQuest;
-
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-        vRange = GetComponentInChildren<VoiceRange>();
-
-        speed = 10f;
-        jumpPower = 8f;
-        nowTime = 0f;
-        delayTime = 0.5f;
-
-        isJump = false;
-        isTalk = false;
-        stop = false;
-        isQuest = false;
+        move = GetComponent<PlayerMove>();
+        talk = GetComponent<PlayerTalk>();
+        rangeNPC = GetComponentInChildren<NPCRange>();
+        rangeItem = GetComponentInChildren<ItemRange>();
+        targetType = -1;
     }
 
-    void Update()
+    public void moveStart()
     {
-        Talk();
-        if (stop)
-            return;
-        posX = Input.GetAxis("Horizontal");
-        if (posX > 0 && sprite.flipX)
-            sprite.flipX = !sprite.flipX;
-        else if (posX < 0 && !sprite.flipX)
-            sprite.flipX = !sprite.flipX;
-
-        anim.SetBool("run", posX != 0);
+        move.moveStart();
+    }
+    public void moveStop()
+    {
+        move.moveStop();
     }
 
-    void FixedUpdate()
+    public GameObject getNPCItem(Vector2 playerPos)
     {
-        if (stop)
-            return;
-        /*RaycastHit2D hit = Physics2D.Raycast(transform.position, sprite.flipX ? Vector3.left : Vector3.right, 2f, LayerMask.GetMask("Wall"));
-        Debug.DrawRay(transform.position, sprite.flipX ? Vector3.left : Vector3.right, Color.red); //레이캐스트를 씬화면에서 체크하기 위한 코드
-        if (hit)
+        GameObject npc = rangeNPC.getnpcGameObject(playerPos);
+        GameObject item = rangeItem.getitemGameObject(playerPos);
+
+        if (npc == null && item == null)
         {
-            speed = 0f;
             Debug.Log("실행");
+            targetType = -1;
+            return null;
+        }
 
-        }*/
-        rigid.velocity = new Vector2(posX * speed, rigid.velocity.y);
-
-        if (Input.GetButton("Jump") && !isJump)
+        if (rangeNPC.getDistance < rangeItem.getDistance)
         {
-            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            isJump = true;
+            targetType = 0;
+            return npc;
         }
+        targetType = 1;
+        return item;
     }
 
-    public void Talk()
+    public void rangeReset()
     {
-        if (nowTime >= delayTime) {
-            if (Input.GetKey(KeyCode.Z) && !isTalk)
-            {
-                int id = vRange.getnpcID(transform.position);
-                if (id == 0)
-                    return;
-                nowTime = 0f;
-                isTalk = true;                
-                MoveStop();
-                GameManager.Manager.GetUIManager.StartTalk(id);
-            }
-            else if (Input.GetKey(KeyCode.Z) && isTalk)
-            {
-                if (GameManager.Manager.GetUIManager.IsEndTalk())
-                {
-                    nowTime = 0f;
-                    isTalk = false;
-                    MoveStart();
-                    GameManager.Manager.GetUIManager.EndTalk();
-                }
-            } 
-        }
-        else { 
-            nowTime += Time.deltaTime; 
-        }
+        rangeNPC.rangeReset();
+        rangeItem.rangeReset();
     }
 
-    public void Quest()
-    {
-        if (!isQuest)
-            return;
-
-    }
-
-    public void MoveStop()
-    {
-        stop = true;
-        speed = 0f;
-        jumpPower = 0f;
-        posX = 0f;
-        rigid.velocity = Vector2.zero;
-        if (anim.GetBool("run"))
-            anim.SetBool("run", false);
-    }
-
-    public void MoveStart()
-    {
-        stop = false;
-        speed = 10f;
-        jumpPower = 8f;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (Input.GetKey(KeyCode.S) && collision.gameObject.tag == "key")
-        {
-            //GameManager.Manager.GetSetEventManager.EventPost(EventType.KeyItemPickUp);
-            Destroy(collision.gameObject);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if(other.gameObject.tag == "ground")
-        {
-            isJump = false;
-        }
-    }
+    public int getTargetType { get { return targetType; } }
 }

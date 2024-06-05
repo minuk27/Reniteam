@@ -7,12 +7,13 @@ public class PlayerTeleportation : MonoBehaviour
     private bool isTeleprot;
     private float nowTime;
     private float delay;
+    private Place nowPlace;
 
     // Start is called before the first frame update
     void Start()
     {
         isTeleprot = true;
-        delay = 0.5f;
+        delay = 0.1f;
         nowTime = 0f;
     }
 
@@ -31,12 +32,25 @@ public class PlayerTeleportation : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetKey(KeyCode.UpArrow) && collision.gameObject.tag == "portal" && isTeleprot)
+        if (collision.gameObject.tag == "Portal" && isTeleprot)
         {
-            nowTime = 0f;
-            isTeleprot = false;
-            CamMove.camM.PlaceCam(collision.gameObject.GetComponent<Portal>().GetPlace);
-            this.gameObject.transform.position = collision.gameObject.GetComponent<Portal>().Position;
+            Place place = collision.gameObject.GetComponent<ScreenPortal>().getPlaceName;
+            Vector2 camPos = collision.gameObject.GetComponent<ScreenPortal>().getCamPos;
+            GameObject nextScreen = collision.gameObject.GetComponent<ScreenPortal>().getNextScreen;
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                nowTime = 0f;
+                isTeleprot = false;
+                GameManager.Manager.getScreenTransition.changeScreen(place, camPos, nextScreen);
+                nowPlace = place;
+            }
+            else if(Input.GetKey(KeyCode.D) && nowPlace == Place.Voice)
+            {
+                nowTime = 0f;
+                isTeleprot = false;
+                GameManager.Manager.getScreenTransition.changeScreen(place, camPos, nextScreen);
+                nowPlace = place;
+            }
         }
     }
 }
