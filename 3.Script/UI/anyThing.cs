@@ -5,11 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class anyThing : MonoBehaviour
 {
+    [SerializeField] UIScenesManager scenesManger;
     void Update() 
     {
         if (Input.anyKeyDown) 
         {
-            //GameManager.Manager.GetSceneManager.ChangeSceneMainScreen("TutorialVoice");
+            scenesManger.changeScenes(ScenesName.Voice);
         }
     }
 }
