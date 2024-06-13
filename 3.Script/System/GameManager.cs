@@ -16,14 +16,9 @@ public class GameManager : MonoBehaviour
             return manager;
         }
     }
-
-    private EventManager eventManager; //이벤트 매니저
-    private TalkManager talkManager; //대화 매니저
-    private SceneChangeManager sceneManager; //씬전환 매니저
-    private QuestManager questManager; //퀘스트 매니저
-    private STTManager sttManager; //stt매니저
-    private UIManager uiManager;
-
+    STTManager sttManager; //stt매니저, stt관련 대화파일 사용 및 관리
+    [SerializeField] UIManager uiManager; //ui매니저, 모든 ui 통제
+    [SerializeField] ScreenTransition screenTransition; //화면전환 기능 제공
 
     private void Awake()
     {
@@ -35,35 +30,21 @@ public class GameManager : MonoBehaviour
         manager = this;
         DontDestroyOnLoad(this.gameObject);
 
-        ManagerInstance();
-        InitializeManagers();
+        ManagerInstance(); InitializeManagers();
     }
 
-    private void ManagerInstance()
+    private void ManagerInstance() // 동적 추가할 필요없을 경우 개로 인스턴스 생성
     {
-        eventManager = new EventManager();
-        talkManager = new TalkManager();
-        sceneManager = new SceneChangeManager();
-        questManager = new QuestManager();
         sttManager = new STTManager();
-        uiManager = new UIManager();
     }
 
-    private void InitializeManagers()
+    private void InitializeManagers() //각 매니저 초기화 작업(필요한 것만)
     {
-        talkManager.Initialize();
-        questManager.Initialize();
         sttManager.Initialize();
         uiManager.Initialize();
     }
 
-    public EventManager GetSetEventManager { get { return eventManager; } }
-
-    public TalkManager GetSetTalkManager { get { return talkManager; } }
-
-    public SceneChangeManager GetSceneManager { get { return sceneManager; } }
-
-    public STTManager GetSttManager { get { return sttManager; } }
-
-    public UIManager GetUIManager { get { return uiManager; } }
+    public STTManager GetSttManager { get { return sttManager; } } // 매니저 호출
+    public UIManager getUIManager { get { return uiManager; } } // 매니저 호출
+    public ScreenTransition getScreenTransition { get { return screenTransition; } } // 매니저 호출
 }
